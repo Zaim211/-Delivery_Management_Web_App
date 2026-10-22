@@ -65,6 +65,7 @@ export default function MapClick({
   return (
     <div style={{ height }} className="w-full rounded-2xl overflow-hidden border border-gray-200">
       <MapContainer
+        key="zone-map"
         center={center}
         zoom={zoom}
         style={{ height: "100%", width: "100%" }}

@@ -30,44 +30,51 @@ export default function LoginForm() {
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center px-4 bg-gray-50">
-      <form
-        onSubmit={onSubmit}
-        className="w-full max-w-sm bg-white rounded-2xl shadow p-6 space-y-4"
-      >
-        <h1 className="text-2xl font-bold">Log in</h1>
-        {err && (
-          <div className="bg-red-50 text-red-700 text-sm rounded-lg p-3">{err}</div>
-        )}
+    <main className="min-h-screen flex items-center justify-center px-4 py-10">
+      <form onSubmit={onSubmit} className="w-full max-w-sm card p-6 space-y-4">
+        <div className="text-center space-y-1">
+          <div className="mx-auto grid place-items-center w-12 h-12 rounded-2xl bg-primary-soft text-2xl">
+            🚚
+          </div>
+          <h1 className="text-2xl font-bold tracking-tight">Welcome back</h1>
+          <p className="text-sm text-muted">Log in to manage deliveries</p>
+        </div>
+
+        {err && <div className="alert alert-danger">{err}</div>}
+
         <label className="block">
-          <span className="text-sm font-medium text-gray-700">Email</span>
+          <span className="label">Email</span>
           <input
             type="email"
             required
+            autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 w-full h-12 rounded-lg border border-gray-300 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="input"
+            placeholder="you@example.com"
           />
         </label>
+
         <label className="block">
-          <span className="text-sm font-medium text-gray-700">Password</span>
+          <span className="label">Password</span>
           <input
             type="password"
             required
+            autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="mt-1 w-full h-12 rounded-lg border border-gray-300 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="input"
+            placeholder="••••••••"
           />
         </label>
-        <button
-          disabled={loading}
-          className="w-full h-12 rounded-lg bg-blue-600 text-white font-semibold disabled:opacity-60"
-        >
-          {loading ? "Logging in..." : "Log in"}
+
+        <button disabled={loading} className="btn btn-primary w-full">
+          {loading ? "Logging in…" : "Log in"}
         </button>
-        <p className="text-sm text-center text-gray-600">
+
+        <p className="text-sm text-center text-muted">
           No account?{" "}
-          <Link href="/signup" className="text-blue-600 font-medium">
+          <Link href="/signup" className="text-primary font-semibold">
             Sign up
           </Link>
         </p>
