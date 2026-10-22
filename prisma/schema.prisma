@@ -1,15 +1,75 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  password  String
+  createdAt DateTime  @default(now())
+  products  Product[]
+  zones     Zone[]
+  orders    Order[]
+}
+
+model Product {
+  id        String        @id @default(cuid())
+  name      String
+  price     Float
+  quantity  Int
+  userId    String
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  zones     ProductZone[]
+  orders    Order[]
+  createdAt DateTime      @default(now())
+
+  @@index([userId])
+}
+
+model Zone {
+  id        String        @id @default(cuid())
+  name      String
+  centerLat Float
+  centerLng Float
+  radius    Float
+  userId    String
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  products  ProductZone[]
+  orders    Order[]
+  createdAt DateTime      @default(now())
+
+  @@index([userId])
+}
+
+model ProductZone {
+  productId String
+  zoneId    String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  zone      Zone    @relation(fields: [zoneId], references: [id], onDelete: Cascade)
+
+  @@id([productId, zoneId])
+  @@index([zoneId])
+}
+
+model Order {
+  id          String   @id @default(cuid())
+  quantity    Int
+  customerLat Float
+  customerLng Float
+  address     String
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId   String
+  product     Product  @relation(fields: [productId], references: [id])
+  zoneId      String
+  zone        Zone     @relation(fields: [zoneId], references: [id])
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+  @@index([zoneId])
 }
